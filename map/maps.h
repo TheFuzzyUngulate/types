@@ -37,6 +37,6 @@ void m_hashmap_remove(m_hashmap *m, char* key);
 int m_hashmap_add_entry(m_hashmap *m, char* key, void* val);
 m_hashmap* m_hashmap_init(int vsize, unsigned long (*hash)(unsigned char* str));
 
-#define m_hashmap_create(type, hash) (m_hashmap_init(sizeof((type)), (hash)))
+#define m_hashmap_create(type, hash) (m_hashmap_init(sizeof(type), (hash)))
 
 #endif
