@@ -10,10 +10,9 @@ m_string
 }
 m_string;
 
-
-m_string m_string_init();
+m_string m_string_init(const char*);
 void m_string_push(m_string* m, char ch);
-void m_string_concat(m_string* m, char* str);
+void m_string_concat(m_string* m, const char* str);
 char* m_string_get(m_string* m);
 void m_string_clear(m_string* m);
 char** m_string_split(m_string* m, int* len, char delim);

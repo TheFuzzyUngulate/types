@@ -4,12 +4,13 @@
 
 #include "mstring.h"
 
-m_string m_string_init()
+m_string m_string_init(const char* str)
 {
     m_string m;
 
     m.len = 0;
     m.str = (char*)calloc(128, 1);
+    m_string_concat(&m, str);
 
     return m;
 }
@@ -71,7 +72,7 @@ char** m_string_split(m_string* m, int* len, char delim)
 {
     int k = 0;
     char** res = NULL;
-    m_string tmp = m_string_init();
+    m_string tmp = m_string_init("");
 
     for (char* ptr = m->str; *ptr != '\0'; ++ptr) {
         if (*ptr == delim) {
