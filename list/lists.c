@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "lists.h"
 
 /**
@@ -5,17 +7,16 @@
  * 
  * @param size Size of each data element to be stored in list.
  * @param to_string Function converting data element to printable form.
- * @return Pointer to dynamically allocated pointer.
+ * @return Struct containing list information.
  */
-m_list* m_list_init(size_t size) 
+m_list m_list_init(size_t size) 
 {
-    m_list* m    = malloc(sizeof(m_list));
-    m->size      = size;
-    m->count     = 0;
-    m->capacity  = 2;
-    m->array     = malloc(m->capacity * m->size);
-
-    return m;
+    return (m_list) {
+        .size     = size,
+        .count    = 0,
+        .capacity = 2,
+        .array    = malloc(2 * size)
+    };
 }
 
 /**
@@ -86,7 +87,6 @@ int m_list_extend(m_list* tar, m_list* src)
 void m_list_destroy(m_list* m)
 {
     free(m->array);
-    free(m);
 }
 
 /**
@@ -141,19 +141,30 @@ void* m_list_get(m_list* m, int index) {
 }
 
 /**
+ * @brief Get element in list by index.
+ * 
+ * @param m Pointer to list in which the search is done.
+ * @param index Index to search in the list.
+ * @return A void pointer to the element in the index if index is in range, NULL otherwise.
+ */
+void* m_list_at(m_list *m, int index) {
+    void* res = NULL;
+    if (m->count > index) {
+        return m->array + (index * m->size);
+    } else return NULL;
+}
+
+/**
  * @brief Get element at the back of the list.
  * 
  * @param m Pointer to list in which the search is done.
- * @return A void pointer to a copy of the element at the back of the list, if list is not empty. NULL otherwise.
+ * @return A void pointer to the element at the back of the list, if list is not empty. NULL otherwise.
  */
 void* m_list_back(m_list* m)
 {
     void* res = NULL;
     if (m->count > 0) {
-        res = malloc(m->size);
-        if (memcpy(res, m->array + ((m->count-1) * m->size), m->size) == NULL)
-            return NULL;
-        return res;
+        return m->array + ((m->count-1) * m->size);
     } else return NULL;
 }
 

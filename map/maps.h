@@ -24,8 +24,8 @@ m_dumpentry;
 typedef struct m_hashmap
 {
     size_t vsize;                               // Size of hashmap values
-    m_bstree* tree;                             // Hashmap tree size
-    m_bstree* dump;                             // Place to dump collisions
+    m_bstree tree;                              // Hashmap tree size
+    m_bstree dump;                              // Place to dump collisions
     unsigned long (*hash)(unsigned char* str);  // Hash function of hashmap
 }
 m_hashmap;
@@ -35,7 +35,7 @@ int m_hashmap_set(m_hashmap *m, char* key, void* val);
 void* m_hashmap_get(m_hashmap *m, char* key);
 void m_hashmap_remove(m_hashmap *m, char* key);
 int m_hashmap_add_entry(m_hashmap *m, char* key, void* val);
-m_hashmap* m_hashmap_init(int vsize, unsigned long (*hash)(unsigned char* str));
+m_hashmap m_hashmap_init(int vsize, unsigned long (*hash)(unsigned char* str));
 
 #define m_hashmap_create(type, hash) (m_hashmap_init(sizeof(type), (hash)))
 

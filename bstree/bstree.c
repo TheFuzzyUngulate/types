@@ -206,15 +206,13 @@ int m_bstree_remove(m_bstree* t, void *m)
     return -1;
 }
 
-m_bstree* m_bstree_init(size_t size, int (*cmp)(const void*, const void*)) {
-    m_bstree* t = (m_bstree*)malloc(sizeof(m_bstree));
-
-    t->size          = size;
-    t->troot         = NULL;
-    t->table_height  = 0;
-    t->compare       = cmp;
-
-    return t;
+m_bstree m_bstree_init(size_t size, int (*cmp)(const void*, const void*)) {
+    return (m_bstree) {
+        .size = size,
+        .troot = NULL,
+        .compare = cmp,
+        .table_height = 0
+    };
 }
 
 static int
@@ -231,7 +229,6 @@ m_bstree_entry_destroy(m_bstree* m, m_bstree_entry* k)
 int m_bstree_destroy(m_bstree* t)
 {
     m_bstree_entry_destroy(t, t->troot);
-    free(t);
     return 0;
 }
 
@@ -251,17 +248,12 @@ m_bstree_entry_copy(m_bstree_entry* src)
     return dst;
 }
 
-m_bstree* m_bstree_copy(m_bstree* src)
+m_bstree m_bstree_copy(m_bstree* src)
 {
-    m_bstree* t = NULL;
-
-    if (src != NULL) {
-        t                = (m_bstree*)malloc(sizeof(m_bstree));
-        t->size          = src->size;
-        t->table_height  = src->table_height;
-        t->compare       = src->compare;
-        t->troot         = m_bstree_entry_copy(src->troot);
-    }
-
-    return t;
+    return (m_bstree) {
+        .size = src->size,
+        .table_height = src->table_height,
+        .compare = src->compare,
+        .troot = m_bstree_entry_copy(src->troot)
+    };
 }
